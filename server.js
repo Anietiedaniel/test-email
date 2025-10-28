@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 dotenv.config();
 connectDB();
