@@ -38,6 +38,8 @@ export const registerUser = async (req, res) => {
 
     await sendEmail(email, "Verify Your Email", html);
 
+    console.log(await sendEmail(email, "Verify Your Email", html))
+
     res.status(201).json({
       message: "User registered. Please check your email to verify.",
     });
