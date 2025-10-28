@@ -1,24 +1,36 @@
+// utils/sendEmail.js
 import nodemailer from "nodemailer";
 
 export const sendEmail = async (to, subject, html) => {
+  console.log("📧 Preparing to send email...");
+  console.log("➡️ To:", to);
+  console.log("➡️ Subject:", subject);
+
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // Gmail App Password
+        user: process.env.EMAIL_USER, // your gmail
+        pass: process.env.EMAIL_PASS, // app password (not your normal gmail password)
       },
     });
 
-    await transporter.sendMail({
-      from: `"Real Estate Auth" <${process.env.EMAIL_USER}>`,
+    console.log("🧠 Transporter created successfully.");
+
+    const mailOptions = {
+      from: `"Real Estate App" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
-    });
+    };
 
-    console.log(`✅ Email sent to ${to}`);
+    console.log("📨 Sending email...");
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent successfully!");
+    console.log("📩 Message ID:", info.messageId);
+
   } catch (error) {
-    console.error("❌ Email send failed:", error);
+    console.error("❌ Email sending error:", error);
+    throw new Error("Email failed to send");
   }
 };

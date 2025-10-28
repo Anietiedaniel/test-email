@@ -1,40 +1,29 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import cors from "cors";
-import connectDB from "./config/db.js";
+// import cookieParser from "cookie-parser";
+import path from "path";
 import authRoutes from "./routes/auth.js";
-import { sendEmail } from "./utils/sendEmail.js";
 
 dotenv.config();
-connectDB();
-
 const app = express();
+const __dirname = path.resolve();
 
-// Middleware
+// MIDDLEWARES
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
+// app.use(cookieParser());
+app.use(cors({ origin: true, credentials: true }));
 
-// Routes
-app.use("/api/auth", authRoutes);
+// DB CONNECT
+console.log("🌐 Connecting to MongoDB...");
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected successfully!"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
+// ROUTES
+app.use("/api/authagain", authRoutes);
 
-app.get("/api/test-email", async (req, res) => {
-  try {
-    await sendEmail("anietienteabasi123@gmail.com", "SMTP Test", "<h3>✅ SMTP working!</h3>");
-    res.json({ message: "Email sent successfully" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Root route
-app.get("/", (req, res) => res.send("✅ Email Verification Backend Running"));
-
-// Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
