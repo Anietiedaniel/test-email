@@ -18,6 +18,16 @@ app.use(cors({
 
 app.use("/api/auth", authRoutes);
 
+app.get("/api/test-email", async (req, res) => {
+  try {
+    await sendEmail("anietienteabasi123@gmail.com", "SMTP Test", "<h3>✅ SMTP working!</h3>");
+    res.json({ message: "Email sent successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // Default route
 app.get("/", (req, res) => res.send("Email Verification Backend Running 🚀"));
 
