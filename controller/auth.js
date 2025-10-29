@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
     console.log("📧 Sending verification email...");
     await sendEmail(email, "Verify Your Email", html);
 
-    res.status(201).json({ message: "User registered. Please check your email." });
+    res.status(201).json({ message: "User registered. Please check." });
   } catch (error) {
     console.error("❌ Registration error:", error);
     res.status(500).json({ message: "Server error" });
