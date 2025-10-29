@@ -20,6 +20,7 @@ export const registerUser = async (req, res) => {
 
     console.log("📧 Sending verification email...");
     await sendEmail(email, "Verify Your Email", html);
+    console.log("✅ Verification email sent to:", sendEmail(email, "Verify Your Email", html));
 
     res.status(201).json({ message: "User registered. Please check." });
   } catch (error) {
